@@ -24,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // TODO implement switching to other dates. create new instances of this activity for other
+        // dates, so unsaved changes are persisted for the moment.
+        // do we need to manually destroy activity instances at any point, or can we just create 100
+        // of them and the system will take care of destroying them reasonably quickly?
         m_date = new Date();
         String uiDateString = DateFormat.getDateInstance().format(m_date);
         ((TextView)findViewById(R.id.CurrentDateLabel)).setText(uiDateString);
@@ -34,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
         m_storageService = new JournalStorageService(this);
 
+        // TODO add missing input fields, load and save operations.
+        // reuse as much code as possible in the load/save tasks and service implementation, avoid
+        // too much duplicate code.
         new LoadValuesTask().execute();
     }
 
