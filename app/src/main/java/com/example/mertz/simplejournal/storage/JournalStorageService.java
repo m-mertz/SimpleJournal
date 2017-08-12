@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Storage service implementation for SimpleJournal.
  *
@@ -22,39 +25,38 @@ public class JournalStorageService {
     }
 
     // TODO async method
-    public void AddOrUpdateGratefulnessEntry(String date, int number, String value) {
+    public void AddOrUpdateGratefulnessEntry(GratefulnessEntry entry) {
         // TODO lazy and cached
         SQLiteDatabase db = m_storageHelper.getWritableDatabase();
 
-        ContentValues entry = new ContentValues();
-        entry.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE, date);
-        entry.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER, number);
-        entry.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE, value);
+        ContentValues values = new ContentValues();
+        values.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE, entry.Date());
+        values.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER, entry.Number());
+        values.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE, entry.Value());
 
         // TODO add or update
-        db.insert(JournalStorageContract.GratefulnessEntry.TABLE_NAME, null, entry);
+        db.insert(JournalStorageContract.GratefulnessEntry.TABLE_NAME, null, values);
     }
 
     // TODO GratefulnessEntry class
     // TODO single query method for all entries for a date
     // TODO async method
-    public String GetGratefulnessEntry(String date, int number) {
+    public List<GratefulnessEntry> GetGratefulnessEntries(String date) {
         // TODO lazy and cached
         SQLiteDatabase db = m_storageHelper.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
+            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER,
             JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE
         };
 
         // Filter results WHERE "title" = 'My Title'
-        String selection = JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE + " = ? AND " +
-            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER + " = ?";
+        String selection = JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE + " = ?";
 
         String[] selectionArgs = {
-            date,
-            Integer.toString(number)
+            date
         };
 
         // How you want the results sorted in the resulting Cursor
@@ -70,16 +72,19 @@ public class JournalStorageService {
             null,
             sortOrder);
 
-        String value = "<no entry found>";
+        List<GratefulnessEntry> results = new ArrayList<GratefulnessEntry>();
 
         while (cursor.moveToNext()) {
-            value = cursor.getString(cursor.getColumnIndexOrThrow(
+            int number = cursor.getInt(cursor.getColumnIndexOrThrow(
+                JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER));
+            String value = cursor.getString(cursor.getColumnIndexOrThrow(
                 JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE));
-            break;
+
+            results.add(new GratefulnessEntry(date, number, value));
         }
 
         cursor.close();
-        return value;
+        return results;
     }
 
     private final JournalStorageHelper m_storageHelper;

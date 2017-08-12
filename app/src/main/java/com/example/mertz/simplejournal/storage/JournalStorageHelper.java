@@ -28,6 +28,7 @@ public class JournalStorageHelper extends SQLiteOpenHelper {
         }
     }
 
+    // TODO date and number should be key
     private static final String SQL_CREATE_GRATEFULNESS_TABLE =
         "CREATE TABLE " + JournalStorageContract.GratefulnessEntry.TABLE_NAME + " (" +
             JournalStorageContract.GratefulnessEntry._ID + " INTEGER PRIMARY KEY," +
