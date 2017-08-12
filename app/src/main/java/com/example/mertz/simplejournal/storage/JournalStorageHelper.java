@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * SimpleJournal storage helper for database management.
  */
-public class JournalStorageHelper extends SQLiteOpenHelper {
+class JournalStorageHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "SimpleJournal.db";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "SimpleJournal.db";
 
-    public JournalStorageHelper(Context context) {
+    JournalStorageHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -30,10 +30,10 @@ public class JournalStorageHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_GRATEFULNESS_TABLE =
         "CREATE TABLE " + JournalStorageContract.GratefulnessEntry.TABLE_NAME + " (" +
-            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE + " TEXT," + // TODO proper date type? // TODO index for fast access?
+            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE + " TEXT," +
             JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER + " INTEGER," +
             JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE + " TEXT," +
             "PRIMARY KEY (" +
-                JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE + "," +
-                JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER + "));";
+            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE + "," +
+            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER + "));";
 }

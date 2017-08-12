@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.support.design.widget.Snackbar;
 
 import com.example.mertz.simplejournal.storage.GratefulnessEntry;
+import com.example.mertz.simplejournal.storage.IJournalStorageService;
 import com.example.mertz.simplejournal.storage.JournalStorageService;
 
 import java.text.DateFormat;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnSave(View view) {
-        List<GratefulnessEntry> entries = new ArrayList<GratefulnessEntry>();
+        List<GratefulnessEntry> entries = new ArrayList<>();
 
         AddGratefulnessEntryIfNotEmpty(m_gratefulness0Input, m_date, 0, entries);
         AddGratefulnessEntryIfNotEmpty(m_gratefulness1Input, m_date, 1, entries);
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         list.add(new GratefulnessEntry(date, number, value));
     }
 
-    private JournalStorageService m_storageService;
+    private IJournalStorageService m_storageService;
     private EditText m_gratefulness0Input;
     private EditText m_gratefulness1Input;
     private EditText m_gratefulness2Input;

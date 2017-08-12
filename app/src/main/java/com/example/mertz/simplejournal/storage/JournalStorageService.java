@@ -14,22 +14,19 @@ import java.util.Locale;
 
 /**
  * Storage service implementation for SimpleJournal.
- *
- * TODO intent service or something? what's the proper Android thing to use for a storage backend?
- * TODO interface
  */
-public class JournalStorageService {
+public class JournalStorageService implements IJournalStorageService {
     public JournalStorageService(Context context) {
-        // TODO is this expensive? lazy in background?
         m_storageHelper = new JournalStorageHelper(context);
     }
 
+    @Override
     public void Close() {
         m_storageHelper.close();
     }
 
+    @Override
     public void AddOrUpdateGratefulnessEntry(GratefulnessEntry entry) {
-        // TODO lazy and cached
         SQLiteDatabase db = m_storageHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -40,11 +37,8 @@ public class JournalStorageService {
         db.insertWithOnConflict(JournalStorageContract.GratefulnessEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
-    // TODO GratefulnessEntry class
-    // TODO single query method for all entries for a date
-    // TODO async method
+    @Override
     public List<GratefulnessEntry> GetGratefulnessEntries(Date date) {
-        // TODO lazy and cached
         SQLiteDatabase db = m_storageHelper.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
@@ -74,7 +68,7 @@ public class JournalStorageService {
             null,
             sortOrder);
 
-        List<GratefulnessEntry> results = new ArrayList<GratefulnessEntry>();
+        List<GratefulnessEntry> results = new ArrayList<>();
 
         while (cursor.moveToNext()) {
             int number = cursor.getInt(cursor.getColumnIndexOrThrow(
