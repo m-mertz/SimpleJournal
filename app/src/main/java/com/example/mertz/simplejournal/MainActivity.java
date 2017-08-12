@@ -3,13 +3,17 @@ package com.example.mertz.simplejournal;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.support.design.widget.Snackbar;
 
 import com.example.mertz.simplejournal.storage.GratefulnessEntry;
 import com.example.mertz.simplejournal.storage.JournalStorageService;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         m_storageService = new JournalStorageService(this);
 
-        // TODO remove
-        m_storageService.AddOrUpdateGratefulnessEntry(new GratefulnessEntry(m_date, 1, "test"));
-
         new LoadValuesTask().execute();
     }
 
@@ -40,6 +41,22 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public void OnSave(View view) {
+        List<GratefulnessEntry> entries = new ArrayList<GratefulnessEntry>();
+
+        AddGratefulnessEntryIfNotEmpty(m_gratefulness0Input, m_date, 0, entries);
+        AddGratefulnessEntryIfNotEmpty(m_gratefulness1Input, m_date, 1, entries);
+        AddGratefulnessEntryIfNotEmpty(m_gratefulness2Input, m_date, 2, entries);
+
+        new SaveValuesTask(view).execute(entries.toArray(new GratefulnessEntry[entries.size()]));
+    }
+
+    private static void AddGratefulnessEntryIfNotEmpty(EditText input, String date, int number, List<GratefulnessEntry> list) {
+        String value = input.getText().toString();
+        list.add(new GratefulnessEntry(date, number, value));
+    }
+
+    // TODO should be Date object. DB date format is storage-internal, use locale formatting for UI
     private static String GetCurrentDate() {
         Date now = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -52,10 +69,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText m_gratefulness2Input;
     private String m_date;
 
-    // TODO two tasks for read / write, or an intent service? intent service returns values in some
-    // async way, but not sure how much boilerplate required to await results and write to UI.
-    // if service interface is just about data and synchronous, and we have two background tasks here
-    // to call it and link it to UI, that's not too bad.
     private class LoadValuesTask extends AsyncTask<Object, Integer, List<GratefulnessEntry>> {
         @Override
         protected List<GratefulnessEntry> doInBackground(Object[] params) {
@@ -84,5 +97,35 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private class SaveValuesTask extends AsyncTask<GratefulnessEntry, Integer, Boolean> {
+        SaveValuesTask(View view) {
+            m_view = view;
+        }
+
+        @Override
+        protected Boolean doInBackground(GratefulnessEntry[] params) {
+            boolean success = true;
+
+            for (GratefulnessEntry entry: params) {
+                try {
+                    m_storageService.AddOrUpdateGratefulnessEntry(entry);
+                } catch (Throwable t) {
+                    Log.e("SaveError", "Failed to save entries", t);
+                    success = false;
+                }
+            }
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            String message = result ? "Save successful" : "Error on save!";
+            Snackbar.make(m_view, message, Snackbar.LENGTH_SHORT).show();
+        }
+
+        private View m_view;
     }
 }

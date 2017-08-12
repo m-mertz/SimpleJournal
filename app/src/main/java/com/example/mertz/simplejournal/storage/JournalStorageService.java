@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,6 @@ public class JournalStorageService {
         m_storageHelper.close();
     }
 
-    // TODO async method
     public void AddOrUpdateGratefulnessEntry(GratefulnessEntry entry) {
         // TODO lazy and cached
         SQLiteDatabase db = m_storageHelper.getWritableDatabase();
@@ -34,8 +34,7 @@ public class JournalStorageService {
         values.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER, entry.Number());
         values.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE, entry.Value());
 
-        // TODO add or update
-        db.insert(JournalStorageContract.GratefulnessEntry.TABLE_NAME, null, values);
+        db.insertWithOnConflict(JournalStorageContract.GratefulnessEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     // TODO GratefulnessEntry class
@@ -61,7 +60,7 @@ public class JournalStorageService {
 
         // How you want the results sorted in the resulting Cursor
         String sortOrder =
-            JournalStorageContract.GratefulnessEntry._ID + " ASC";
+            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER + " ASC";
 
         Cursor cursor = db.query(
             JournalStorageContract.GratefulnessEntry.TABLE_NAME,
@@ -80,6 +79,7 @@ public class JournalStorageService {
             String value = cursor.getString(cursor.getColumnIndexOrThrow(
                 JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE));
 
+            Log.v("GetGratefulnessEntries", date + "," + number + "," + value);
             results.add(new GratefulnessEntry(date, number, value));
         }
 

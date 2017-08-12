@@ -28,11 +28,12 @@ public class JournalStorageHelper extends SQLiteOpenHelper {
         }
     }
 
-    // TODO date and number should be key
     private static final String SQL_CREATE_GRATEFULNESS_TABLE =
         "CREATE TABLE " + JournalStorageContract.GratefulnessEntry.TABLE_NAME + " (" +
-            JournalStorageContract.GratefulnessEntry._ID + " INTEGER PRIMARY KEY," +
             JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE + " TEXT," + // TODO proper date type? // TODO index for fast access?
             JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER + " INTEGER," +
-            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE + " TEXT)";
+            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE + " TEXT," +
+            "PRIMARY KEY (" +
+                JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE + "," +
+                JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER + "));";
 }

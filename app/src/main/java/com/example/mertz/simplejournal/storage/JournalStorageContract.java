@@ -15,7 +15,7 @@ public final class JournalStorageContract {
     /**
      * Table and columns names for gratefulness entries.
      */
-    public static class GratefulnessEntry implements BaseColumns {
+    public static class GratefulnessEntry {
         public static final String TABLE_NAME = "gratefulness";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_NUMBER = "number";
