@@ -12,7 +12,7 @@ import android.support.design.widget.Snackbar;
 import com.example.mertz.simplejournal.storage.GratefulnessEntry;
 import com.example.mertz.simplejournal.storage.JournalStorageService;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,8 +23,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        m_date = GetCurrentDate();
-        ((TextView)findViewById(R.id.CurrentDateLabel)).setText(m_date);
+        m_date = new Date();
+        String uiDateString = DateFormat.getDateInstance().format(m_date);
+        ((TextView)findViewById(R.id.CurrentDateLabel)).setText(uiDateString);
 
         m_gratefulness0Input = (EditText)findViewById(R.id.Gratefulness0Input);
         m_gratefulness1Input = (EditText)findViewById(R.id.Gratefulness1Input);
@@ -51,23 +52,17 @@ public class MainActivity extends AppCompatActivity {
         new SaveValuesTask(view).execute(entries.toArray(new GratefulnessEntry[entries.size()]));
     }
 
-    private static void AddGratefulnessEntryIfNotEmpty(EditText input, String date, int number, List<GratefulnessEntry> list) {
+    private static void AddGratefulnessEntryIfNotEmpty(EditText input, Date date, int number, List<GratefulnessEntry> list) {
         String value = input.getText().toString();
         list.add(new GratefulnessEntry(date, number, value));
-    }
-
-    // TODO should be Date object. DB date format is storage-internal, use locale formatting for UI
-    private static String GetCurrentDate() {
-        Date now = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(now);
     }
 
     private JournalStorageService m_storageService;
     private EditText m_gratefulness0Input;
     private EditText m_gratefulness1Input;
     private EditText m_gratefulness2Input;
-    private String m_date;
+    // Date for the data in this activity, used for loading and saving data.
+    private Date m_date;
 
     private class LoadValuesTask extends AsyncTask<Object, Integer, List<GratefulnessEntry>> {
         @Override
@@ -78,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<GratefulnessEntry> results) {
             for (GratefulnessEntry entry: results) {
-                // TODO this is a bit shit
                 switch (entry.Number()) {
                     case 0:
                         m_gratefulness0Input.setText(entry.Value());
@@ -93,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     default:
-                        throw new IllegalArgumentException("Unexpected gratefulness number " + entry.Number());
+                        Log.e("LoadValuesTask", "Cannot handle gratefulness entry with number " + entry.Number());
                 }
             }
         }

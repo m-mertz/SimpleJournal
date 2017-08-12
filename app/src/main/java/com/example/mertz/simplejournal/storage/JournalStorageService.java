@@ -6,8 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Storage service implementation for SimpleJournal.
@@ -30,7 +33,7 @@ public class JournalStorageService {
         SQLiteDatabase db = m_storageHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE, entry.Date());
+        values.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE, FormatDate(entry.Date()));
         values.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER, entry.Number());
         values.put(JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE, entry.Value());
 
@@ -40,7 +43,7 @@ public class JournalStorageService {
     // TODO GratefulnessEntry class
     // TODO single query method for all entries for a date
     // TODO async method
-    public List<GratefulnessEntry> GetGratefulnessEntries(String date) {
+    public List<GratefulnessEntry> GetGratefulnessEntries(Date date) {
         // TODO lazy and cached
         SQLiteDatabase db = m_storageHelper.getReadableDatabase();
 
@@ -55,7 +58,7 @@ public class JournalStorageService {
         String selection = JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE + " = ?";
 
         String[] selectionArgs = {
-            date
+            FormatDate(date)
         };
 
         // How you want the results sorted in the resulting Cursor
@@ -79,13 +82,19 @@ public class JournalStorageService {
             String value = cursor.getString(cursor.getColumnIndexOrThrow(
                 JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE));
 
-            Log.v("GetGratefulnessEntries", date + "," + number + "," + value);
+            Log.v("GetGratefulnessEntries", FormatDate(date) + "," + number + "," + value);
             results.add(new GratefulnessEntry(date, number, value));
         }
 
         cursor.close();
         return results;
     }
+
+    private static String FormatDate(Date date) {
+        return DateFormat.format(date);
+    }
+
+    private static final SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 
     private final JournalStorageHelper m_storageHelper;
 }

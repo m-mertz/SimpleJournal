@@ -1,17 +1,19 @@
 package com.example.mertz.simplejournal.storage;
 
+import java.util.Date;
+
 /**
  * Gratefulness entry data type.
  */
 
 public class GratefulnessEntry {
-    public GratefulnessEntry(String date, int number, String value) {
+    public GratefulnessEntry(Date date, int number, String value) {
         m_date = date;
         m_number = number;
         m_value = value;
     }
 
-    public String Date() {
+    public Date Date() {
         return m_date;
     }
 
@@ -23,7 +25,7 @@ public class GratefulnessEntry {
         return m_value;
     }
 
-    private final String m_date;
+    private final Date m_date;
 
     private final int m_number;
 
