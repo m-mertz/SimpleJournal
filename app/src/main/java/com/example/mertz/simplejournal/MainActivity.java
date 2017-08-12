@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        m_storageService.Close();
         super.onDestroy();
     }
 

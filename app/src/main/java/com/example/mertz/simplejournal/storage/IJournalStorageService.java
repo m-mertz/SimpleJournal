@@ -8,8 +8,6 @@ import java.util.List;
  */
 
 public interface IJournalStorageService {
-    void Close();
-
     void AddOrUpdateGratefulnessEntry(GratefulnessEntry entry);
 
     List<GratefulnessEntry> GetGratefulnessEntries(Date date);

@@ -17,12 +17,7 @@ import java.util.Locale;
  */
 public class JournalStorageService implements IJournalStorageService {
     public JournalStorageService(Context context) {
-        m_storageHelper = new JournalStorageHelper(context);
-    }
-
-    @Override
-    public void Close() {
-        m_storageHelper.close();
+        m_storageHelper = JournalStorageHelper.GetInstance(context);
     }
 
     @Override
