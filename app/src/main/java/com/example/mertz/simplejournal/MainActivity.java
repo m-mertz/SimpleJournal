@@ -15,6 +15,7 @@ import com.example.mertz.simplejournal.storage.JournalStorageService;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -24,14 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO implement switching to other dates. create new instances of this activity for other
-        // dates, so unsaved changes are persisted for the moment.
-        // do we need to manually destroy activity instances at any point, or can we just create 100
-        // of them and the system will take care of destroying them reasonably quickly?
-        m_date = new Date();
-        String uiDateString = DateFormat.getDateInstance().format(m_date);
-        ((TextView)findViewById(R.id.CurrentDateLabel)).setText(uiDateString);
-
+        m_dateLabel = (TextView)findViewById(R.id.CurrentDateLabel);
         m_gratefulness0Input = (EditText)findViewById(R.id.Gratefulness0Input);
         m_gratefulness1Input = (EditText)findViewById(R.id.Gratefulness1Input);
         m_gratefulness2Input = (EditText)findViewById(R.id.Gratefulness2Input);
@@ -41,12 +35,33 @@ public class MainActivity extends AppCompatActivity {
         // TODO add missing input fields, load and save operations.
         // reuse as much code as possible in the load/save tasks and service implementation, avoid
         // too much duplicate code.
+        m_date = new Date();
         new LoadValuesTask().execute();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public void OnNextDate(View view) {
+
+        // TODO would be nice if we could persist unsaved changes in some temporary way, or prompt
+        // before discarding them by switching the date
+        m_date = AddDays(m_date, 1);
+        new LoadValuesTask().execute();
+    }
+
+    public void OnPreviousDate(View view) {
+        m_date = AddDays(m_date, -1);
+        new LoadValuesTask().execute();
+    }
+
+    private static Date AddDays(Date date, int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days);
+        return cal.getTime();
     }
 
     public void OnSave(View view) {
@@ -65,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private IJournalStorageService m_storageService;
+    private TextView m_dateLabel;
     private EditText m_gratefulness0Input;
     private EditText m_gratefulness1Input;
     private EditText m_gratefulness2Input;
@@ -79,6 +95,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<GratefulnessEntry> results) {
+            String uiDateString = DateFormat.getDateInstance().format(m_date);
+            m_dateLabel.setText(uiDateString);
+
+            m_gratefulness0Input.setText("");
+            m_gratefulness1Input.setText("");
+            m_gratefulness2Input.setText("");
+
             for (GratefulnessEntry entry: results) {
                 switch (entry.Number()) {
                     case 0:
