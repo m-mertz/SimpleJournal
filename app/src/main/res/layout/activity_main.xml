@@ -1,265 +1,270 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.mertz.simplejournal.MainActivity">
+    android:layout_height="match_parent">
 
-    <!-- Date navigation -->
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.mertz.simplejournal.MainActivity">
 
-    <Button
-        android:id="@+id/PreviousDateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:onClick="OnPreviousDate"
-        android:text="Prev"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        <!-- Date navigation -->
 
-    <TextView
-        android:id="@+id/CurrentDateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="date placeholder"
-        app:layout_constraintTop_toTopOf="@+id/PreviousDateButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/PreviousDateButton"
-        app:layout_constraintVertical_bias="0.5"/>
+        <Button
+            android:id="@+id/PreviousDateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:onClick="OnPreviousDate"
+            android:text="Prev"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
 
-    <Button
-        android:id="@+id/NextDateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:onClick="OnNextDate"
-        android:text="Next"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        <TextView
+            android:id="@+id/CurrentDateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="date placeholder"
+            app:layout_constraintTop_toTopOf="@+id/PreviousDateButton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/PreviousDateButton"
+            app:layout_constraintVertical_bias="0.5"/>
 
-    <!-- Gratefulness -->
+        <Button
+            android:id="@+id/NextDateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:onClick="OnNextDate"
+            android:text="Next"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-    <TextView
-        android:id="@+id/GratefulnessHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="I am grateful for..."
-        app:layout_constraintTop_toBottomOf="@+id/PreviousDateButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="16dp"/>
+        <!-- Gratefulness -->
 
-    <EditText
-        android:id="@+id/Gratefulness0Input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:hint="1"
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/GratefulnessHeader"/>
+        <TextView
+            android:id="@+id/GratefulnessHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="I am grateful for..."
+            app:layout_constraintTop_toBottomOf="@+id/PreviousDateButton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
-    <EditText
-        android:id="@+id/Gratefulness1Input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:hint="2"
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Gratefulness0Input"/>
+        <EditText
+            android:id="@+id/Gratefulness0Input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="1"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/GratefulnessHeader"/>
 
-    <EditText
-        android:id="@+id/Gratefulness2Input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:hint="3"
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Gratefulness1Input"/>
+        <EditText
+            android:id="@+id/Gratefulness1Input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="2"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Gratefulness0Input"/>
 
-    <!-- Goals -->
+        <EditText
+            android:id="@+id/Gratefulness2Input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="3"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Gratefulness1Input"/>
 
-    <TextView
-        android:id="@+id/GoalsHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="What would make today great?"
-        app:layout_constraintTop_toBottomOf="@+id/Gratefulness2Input"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="16dp"/>
+        <!-- Goals -->
 
-    <EditText
-        android:id="@+id/Goals0Input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:hint="1"
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/GoalsHeader"/>
+        <TextView
+            android:id="@+id/GoalsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="What would make today great?"
+            app:layout_constraintTop_toBottomOf="@+id/Gratefulness2Input"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
-    <EditText
-        android:id="@+id/Goals1Input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:hint="2"
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Goals0Input"/>
+        <EditText
+            android:id="@+id/Goals0Input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="1"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/GoalsHeader"/>
 
-    <EditText
-        android:id="@+id/Goals2Input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:hint="3"
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Goals1Input"/>
+        <EditText
+            android:id="@+id/Goals1Input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="2"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Goals0Input"/>
 
-    <!-- Affirmations -->
+        <EditText
+            android:id="@+id/Goals2Input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="3"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Goals1Input"/>
 
-    <TextView
-        android:id="@+id/AffirmationsHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Daily affirmations. I am..."
-        app:layout_constraintTop_toBottomOf="@+id/Goals2Input"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="16dp"/>
+        <!-- Affirmations -->
 
-    <EditText
-        android:id="@+id/AffirmationsInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AffirmationsHeader"/>
+        <TextView
+            android:id="@+id/AffirmationsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Daily affirmations. I am..."
+            app:layout_constraintTop_toBottomOf="@+id/Goals2Input"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
-    <!-- Save button 1 -->
+        <EditText
+            android:id="@+id/AffirmationsInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/AffirmationsHeader"/>
 
-    <Button
-        android:id="@+id/SaveButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="OnSave"
-        android:text="Save"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AffirmationsInput"/>
+        <!-- Save button 1 -->
 
-    <!-- Wins -->
+        <Button
+            android:id="@+id/SaveButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:onClick="OnSave"
+            android:text="Save"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/AffirmationsInput"/>
 
-    <TextView
-        android:id="@+id/WinsHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="3 Amazing things that happened today..."
-        app:layout_constraintTop_toBottomOf="@+id/SaveButton1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="16dp"/>
+        <!-- Wins -->
 
-    <EditText
-        android:id="@+id/Wins0Input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:hint="1"
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/WinsHeader"/>
+        <TextView
+            android:id="@+id/WinsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="3 Amazing things that happened today..."
+            app:layout_constraintTop_toBottomOf="@+id/SaveButton1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
-    <EditText
-        android:id="@+id/Wins1Input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:hint="2"
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Wins0Input"/>
+        <EditText
+            android:id="@+id/Wins0Input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="1"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/WinsHeader"/>
 
-    <EditText
-        android:id="@+id/Wins2Input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:hint="3"
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Wins1Input"/>
+        <EditText
+            android:id="@+id/Wins1Input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="2"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Wins0Input"/>
 
-    <!-- Improvement -->
+        <EditText
+            android:id="@+id/Wins2Input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="3"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Wins1Input"/>
 
-    <TextView
-        android:id="@+id/ImprovementHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="How could I have made today better?"
-        app:layout_constraintTop_toBottomOf="@+id/Wins2Input"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="16dp"/>
+        <!-- Improvement -->
 
-    <EditText
-        android:id="@+id/ImprovementInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ImprovementHeader"/>
+        <TextView
+            android:id="@+id/ImprovementHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="How could I have made today better?"
+            app:layout_constraintTop_toBottomOf="@+id/Wins2Input"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"/>
 
-    <!-- Save button 2 -->
+        <EditText
+            android:id="@+id/ImprovementInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:inputType="textMultiLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ImprovementHeader"/>
 
-    <Button
-        android:id="@+id/SaveButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="OnSave"
-        android:text="Save"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ImprovementInput"/>
+        <!-- Save button 2 -->
 
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/SaveButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:onClick="OnSave"
+            android:text="Save"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ImprovementInput"/>
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
