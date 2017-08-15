@@ -29,12 +29,22 @@ public class MainActivity extends AppCompatActivity {
         m_gratefulness0Input = (EditText)findViewById(R.id.Gratefulness0Input);
         m_gratefulness1Input = (EditText)findViewById(R.id.Gratefulness1Input);
         m_gratefulness2Input = (EditText)findViewById(R.id.Gratefulness2Input);
+        m_goals0Input = (EditText)findViewById(R.id.Goals0Input);
+        m_goals1Input = (EditText)findViewById(R.id.Goals1Input);
+        m_goals2Input = (EditText)findViewById(R.id.Goals2Input);
+        m_affirmationsInput = (EditText)findViewById(R.id.AffirmationsInput);
+        m_wins0Input = (EditText)findViewById(R.id.Wins0Input);
+        m_wins1Input = (EditText)findViewById(R.id.Wins1Input);
+        m_wins2Input = (EditText)findViewById(R.id.Wins2Input);
+        m_improvementInput = (EditText)findViewById(R.id.ImprovementInput);
 
         m_storageService = new JournalStorageService(this);
 
-        // TODO add missing input fields, load and save operations.
+        // TODO add load and save operations for other inputs
         // reuse as much code as possible in the load/save tasks and service implementation, avoid
         // too much duplicate code.
+        // maybe use a common base class for the data types, and generic save/load methods in the service
+        // that just get called with the correct table names.
         m_date = new Date();
         new LoadValuesTask().execute();
     }
@@ -65,18 +75,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnSave(View view) {
-        List<GratefulnessEntry> entries = new ArrayList<>();
+        GratefulnessEntry[] entries = {
+            new GratefulnessEntry(m_date, 0, m_gratefulness0Input.getText().toString()),
+            new GratefulnessEntry(m_date, 1, m_gratefulness1Input.getText().toString()),
+            new GratefulnessEntry(m_date, 2, m_gratefulness2Input.getText().toString())
+        };
 
-        AddGratefulnessEntryIfNotEmpty(m_gratefulness0Input, m_date, 0, entries);
-        AddGratefulnessEntryIfNotEmpty(m_gratefulness1Input, m_date, 1, entries);
-        AddGratefulnessEntryIfNotEmpty(m_gratefulness2Input, m_date, 2, entries);
-
-        new SaveValuesTask(view).execute(entries.toArray(new GratefulnessEntry[entries.size()]));
-    }
-
-    private static void AddGratefulnessEntryIfNotEmpty(EditText input, Date date, int number, List<GratefulnessEntry> list) {
-        String value = input.getText().toString();
-        list.add(new GratefulnessEntry(date, number, value));
+        new SaveValuesTask(view).execute(entries);
     }
 
     private IJournalStorageService m_storageService;
@@ -84,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
     private EditText m_gratefulness0Input;
     private EditText m_gratefulness1Input;
     private EditText m_gratefulness2Input;
+    private EditText m_goals0Input;
+    private EditText m_goals1Input;
+    private EditText m_goals2Input;
+    private EditText m_affirmationsInput;
+    private EditText m_wins0Input;
+    private EditText m_wins1Input;
+    private EditText m_wins2Input;
+    private EditText m_improvementInput;
     // Date for the data in this activity, used for loading and saving data.
     private Date m_date;
 
