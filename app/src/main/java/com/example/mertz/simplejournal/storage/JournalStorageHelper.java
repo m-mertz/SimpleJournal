@@ -41,11 +41,11 @@ class JournalStorageHelper extends SQLiteOpenHelper {
     }
 
     private static final String SQL_CREATE_GRATEFULNESS_TABLE =
-        "CREATE TABLE " + JournalStorageContract.GratefulnessEntry.TABLE_NAME + " (" +
-            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE + " TEXT," +
-            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER + " INTEGER," +
-            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_VALUE + " TEXT," +
+        "CREATE TABLE " + JournalStorageContract.JournalEntry.TABLE_NAME_GRATEFULNESS + " (" +
+            JournalStorageContract.JournalEntry.COLUMN_NAME_DATE + " TEXT," +
+            JournalStorageContract.JournalEntry.COLUMN_NAME_NUMBER + " INTEGER," +
+            JournalStorageContract.JournalEntry.COLUMN_NAME_VALUE + " TEXT," +
             "PRIMARY KEY (" +
-            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_DATE + "," +
-            JournalStorageContract.GratefulnessEntry.COLUMN_NAME_NUMBER + "));";
+            JournalStorageContract.JournalEntry.COLUMN_NAME_DATE + "," +
+            JournalStorageContract.JournalEntry.COLUMN_NAME_NUMBER + "));";
 }
