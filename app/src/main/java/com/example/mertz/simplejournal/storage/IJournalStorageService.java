@@ -11,4 +11,20 @@ public interface IJournalStorageService {
     void AddOrUpdateGratefulnessEntry(GratefulnessEntry entry);
 
     List<GratefulnessEntry> GetGratefulnessEntries(Date date);
+
+    void AddOrUpdateGoalEntry(GoalEntry entry);
+
+    List<GoalEntry> GetGoalEntries(Date date);
+
+    void AddOrUpdateAffirmationEntry(AffirmationEntry entry);
+
+    List<AffirmationEntry> GetAffirmationEntries(Date date);
+
+    void AddOrUpdateWinEntry(WinEntry entry);
+
+    List<WinEntry> GetWinEntries(Date date);
+
+    void AddOrUpdateImprovementEntry(ImprovementEntry entry);
+
+    List<ImprovementEntry> GetImprovementEntries(Date date);
 }

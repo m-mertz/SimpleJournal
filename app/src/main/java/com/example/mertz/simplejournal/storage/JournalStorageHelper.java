@@ -31,6 +31,10 @@ class JournalStorageHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_GRATEFULNESS_TABLE);
+        db.execSQL(SQL_CREATE_GOALS_TABLE);
+        db.execSQL(SQL_CREATE_AFFIRMATIONS_TABLE);
+        db.execSQL(SQL_CREATE_WINS_TABLE);
+        db.execSQL(SQL_CREATE_IMPROVEMENT_TABLE);
     }
 
     @Override
@@ -40,12 +44,28 @@ class JournalStorageHelper extends SQLiteOpenHelper {
         }
     }
 
-    private static final String SQL_CREATE_GRATEFULNESS_TABLE =
-        "CREATE TABLE " + JournalStorageContract.JournalEntry.TABLE_NAME_GRATEFULNESS + " (" +
+    private static String BuildSqlCreateJournalEntryTableStatement(String tableName) {
+        return "CREATE TABLE " + tableName + " (" +
             JournalStorageContract.JournalEntry.COLUMN_NAME_DATE + " TEXT," +
             JournalStorageContract.JournalEntry.COLUMN_NAME_NUMBER + " INTEGER," +
             JournalStorageContract.JournalEntry.COLUMN_NAME_VALUE + " TEXT," +
             "PRIMARY KEY (" +
             JournalStorageContract.JournalEntry.COLUMN_NAME_DATE + "," +
             JournalStorageContract.JournalEntry.COLUMN_NAME_NUMBER + "));";
+    }
+
+    private static final String SQL_CREATE_GRATEFULNESS_TABLE =
+        BuildSqlCreateJournalEntryTableStatement(JournalStorageContract.JournalEntry.TABLE_NAME_GRATEFULNESS);
+
+    private static final String SQL_CREATE_GOALS_TABLE =
+        BuildSqlCreateJournalEntryTableStatement(JournalStorageContract.JournalEntry.TABLE_NAME_GOALS);
+
+    private static final String SQL_CREATE_AFFIRMATIONS_TABLE =
+        BuildSqlCreateJournalEntryTableStatement(JournalStorageContract.JournalEntry.TABLE_NAME_AFFIRMATIONS);
+
+    private static final String SQL_CREATE_WINS_TABLE =
+        BuildSqlCreateJournalEntryTableStatement(JournalStorageContract.JournalEntry.TABLE_NAME_WINS);
+
+    private static final String SQL_CREATE_IMPROVEMENT_TABLE =
+        BuildSqlCreateJournalEntryTableStatement(JournalStorageContract.JournalEntry.TABLE_NAME_IMPROVEMENT);
 }
