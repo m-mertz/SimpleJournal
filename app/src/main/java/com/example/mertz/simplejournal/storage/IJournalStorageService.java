@@ -8,23 +8,23 @@ import java.util.List;
  */
 
 public interface IJournalStorageService {
-    void AddOrUpdateGratefulnessEntry(GratefulnessEntry entry);
+    void AddOrUpdateGratefulnessEntry(JournalEntry entry);
 
-    List<GratefulnessEntry> GetGratefulnessEntries(Date date);
+    List<JournalEntry> GetGratefulnessEntries(Date date);
 
-    void AddOrUpdateGoalEntry(GoalEntry entry);
+    void AddOrUpdateGoalEntry(JournalEntry entry);
 
-    List<GoalEntry> GetGoalEntries(Date date);
+    List<JournalEntry> GetGoalEntries(Date date);
 
-    void AddOrUpdateAffirmationEntry(AffirmationEntry entry);
+    void AddOrUpdateAffirmationEntry(JournalEntry entry);
 
-    List<AffirmationEntry> GetAffirmationEntries(Date date);
+    List<JournalEntry> GetAffirmationEntries(Date date);
 
-    void AddOrUpdateWinEntry(WinEntry entry);
+    void AddOrUpdateWinEntry(JournalEntry entry);
 
-    List<WinEntry> GetWinEntries(Date date);
+    List<JournalEntry> GetWinEntries(Date date);
 
-    void AddOrUpdateImprovementEntry(ImprovementEntry entry);
+    void AddOrUpdateImprovementEntry(JournalEntry entry);
 
-    List<ImprovementEntry> GetImprovementEntries(Date date);
+    List<JournalEntry> GetImprovementEntries(Date date);
 }

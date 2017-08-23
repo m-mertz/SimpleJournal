@@ -3,12 +3,12 @@ package com.example.mertz.simplejournal.storage;
 import java.util.Date;
 
 /**
- * Base class for Journal data types.
+ * Journal entry data type.
  */
 
-abstract class JournalEntryBase {
+public class JournalEntry {
 
-    JournalEntryBase(Date date, int number, String value) {
+    public JournalEntry(Date date, int number, String value) {
         m_date = date;
         m_number = number;
         m_value = value;

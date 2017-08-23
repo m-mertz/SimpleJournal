@@ -22,101 +22,56 @@ public class JournalStorageService implements IJournalStorageService {
     }
 
     @Override
-    public void AddOrUpdateGratefulnessEntry(GratefulnessEntry entry) {
+    public void AddOrUpdateGratefulnessEntry(JournalEntry entry) {
         AddOrUpdateEntry(JournalStorageContract.JournalEntry.TABLE_NAME_GRATEFULNESS, entry);
     }
 
     @Override
-    public List<GratefulnessEntry> GetGratefulnessEntries(Date date) {
-
-        // This could be a simple lambda to implement the functional factory interface, but requires Java 8.
-        JournalEntryFactory<GratefulnessEntry> factory = new JournalEntryFactory<GratefulnessEntry>() {
-            @Override
-            public GratefulnessEntry Create(Date dateTmp, int number, String value) {
-                return new GratefulnessEntry(dateTmp, number, value);
-            }
-        };
-
-        return GetEntries(JournalStorageContract.JournalEntry.TABLE_NAME_GRATEFULNESS, date, factory);
+    public List<JournalEntry> GetGratefulnessEntries(Date date) {
+        return GetEntries(JournalStorageContract.JournalEntry.TABLE_NAME_GRATEFULNESS, date);
     }
 
     @Override
-    public void AddOrUpdateGoalEntry(GoalEntry entry) {
+    public void AddOrUpdateGoalEntry(JournalEntry entry) {
         AddOrUpdateEntry(JournalStorageContract.JournalEntry.TABLE_NAME_GOALS, entry);
     }
 
     @Override
-    public List<GoalEntry> GetGoalEntries(Date date) {
-
-        // This could be a simple lambda to implement the functional factory interface, but requires Java 8.
-        JournalEntryFactory<GoalEntry> factory = new JournalEntryFactory<GoalEntry>() {
-            @Override
-            public GoalEntry Create(Date dateTmp, int number, String value) {
-                return new GoalEntry(dateTmp, number, value);
-            }
-        };
-
-        return GetEntries(JournalStorageContract.JournalEntry.TABLE_NAME_GOALS, date, factory);
+    public List<JournalEntry> GetGoalEntries(Date date) {
+        return GetEntries(JournalStorageContract.JournalEntry.TABLE_NAME_GOALS, date);
     }
 
     @Override
-    public void AddOrUpdateAffirmationEntry(AffirmationEntry entry) {
+    public void AddOrUpdateAffirmationEntry(JournalEntry entry) {
         AddOrUpdateEntry(JournalStorageContract.JournalEntry.TABLE_NAME_AFFIRMATIONS, entry);
     }
 
     @Override
-    public List<AffirmationEntry> GetAffirmationEntries(Date date) {
-
-        // This could be a simple lambda to implement the functional factory interface, but requires Java 8.
-        JournalEntryFactory<AffirmationEntry> factory = new JournalEntryFactory<AffirmationEntry>() {
-            @Override
-            public AffirmationEntry Create(Date dateTmp, int number, String value) {
-                return new AffirmationEntry(dateTmp, number, value);
-            }
-        };
-
-        return GetEntries(JournalStorageContract.JournalEntry.TABLE_NAME_AFFIRMATIONS, date, factory);
+    public List<JournalEntry> GetAffirmationEntries(Date date) {
+        return GetEntries(JournalStorageContract.JournalEntry.TABLE_NAME_AFFIRMATIONS, date);
     }
 
     @Override
-    public void AddOrUpdateWinEntry(WinEntry entry) {
+    public void AddOrUpdateWinEntry(JournalEntry entry) {
         AddOrUpdateEntry(JournalStorageContract.JournalEntry.TABLE_NAME_WINS, entry);
     }
 
     @Override
-    public List<WinEntry> GetWinEntries(Date date) {
-
-        // This could be a simple lambda to implement the functional factory interface, but requires Java 8.
-        JournalEntryFactory<WinEntry> factory = new JournalEntryFactory<WinEntry>() {
-            @Override
-            public WinEntry Create(Date dateTmp, int number, String value) {
-                return new WinEntry(dateTmp, number, value);
-            }
-        };
-
-        return GetEntries(JournalStorageContract.JournalEntry.TABLE_NAME_WINS, date, factory);
+    public List<JournalEntry> GetWinEntries(Date date) {
+        return GetEntries(JournalStorageContract.JournalEntry.TABLE_NAME_WINS, date);
     }
 
     @Override
-    public void AddOrUpdateImprovementEntry(ImprovementEntry entry) {
+    public void AddOrUpdateImprovementEntry(JournalEntry entry) {
         AddOrUpdateEntry(JournalStorageContract.JournalEntry.TABLE_NAME_IMPROVEMENT, entry);
     }
 
     @Override
-    public List<ImprovementEntry> GetImprovementEntries(Date date) {
-
-        // This could be a simple lambda to implement the functional factory interface, but requires Java 8.
-        JournalEntryFactory<ImprovementEntry> factory = new JournalEntryFactory<ImprovementEntry>() {
-            @Override
-            public ImprovementEntry Create(Date dateTmp, int number, String value) {
-                return new ImprovementEntry(dateTmp, number, value);
-            }
-        };
-
-        return GetEntries(JournalStorageContract.JournalEntry.TABLE_NAME_IMPROVEMENT, date, factory);
+    public List<JournalEntry> GetImprovementEntries(Date date) {
+        return GetEntries(JournalStorageContract.JournalEntry.TABLE_NAME_IMPROVEMENT, date);
     }
 
-    private void AddOrUpdateEntry(String tableName, JournalEntryBase entry) {
+    private void AddOrUpdateEntry(String tableName, JournalEntry entry) {
 
         SQLiteDatabase db = m_storageHelper.getWritableDatabase();
 
@@ -128,7 +83,7 @@ public class JournalStorageService implements IJournalStorageService {
         db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
-    private <T extends JournalEntryBase> List<T> GetEntries(String tableName, Date date, JournalEntryFactory<T> entryFactory) {
+    private List<JournalEntry> GetEntries(String tableName, Date date) {
 
         SQLiteDatabase db = m_storageHelper.getReadableDatabase();
 
@@ -159,7 +114,7 @@ public class JournalStorageService implements IJournalStorageService {
             null,
             sortOrder);
 
-        List<T> results = new ArrayList<>();
+        List<JournalEntry> results = new ArrayList<>();
 
         while (cursor.moveToNext()) {
             int number = cursor.getInt(cursor.getColumnIndexOrThrow(
@@ -168,7 +123,7 @@ public class JournalStorageService implements IJournalStorageService {
                 JournalStorageContract.JournalEntry.COLUMN_NAME_VALUE));
 
             Log.v("GetEntries", tableName + "," + FormatDate(date) + "," + number + "," + value);
-            results.add(entryFactory.Create(date, number, value));
+            results.add(new JournalEntry(date, number, value));
         }
 
         cursor.close();
@@ -182,8 +137,4 @@ public class JournalStorageService implements IJournalStorageService {
     private static final SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 
     private final JournalStorageHelper m_storageHelper;
-
-    private interface JournalEntryFactory<T> {
-        T Create(Date date, int number, String value);
-    }
 }

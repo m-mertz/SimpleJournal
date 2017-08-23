@@ -9,8 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.support.design.widget.Snackbar;
 
-import com.example.mertz.simplejournal.storage.GratefulnessEntry;
 import com.example.mertz.simplejournal.storage.IJournalStorageService;
+import com.example.mertz.simplejournal.storage.JournalEntry;
 import com.example.mertz.simplejournal.storage.JournalStorageService;
 
 import java.text.DateFormat;
@@ -40,11 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         m_storageService = new JournalStorageService(this);
 
-        // TODO add load and save operations for other inputs
-        // reuse as much code as possible in the load/save tasks and service implementation, avoid
-        // too much duplicate code.
-        // maybe use a common base class for the data types, and generic save/load methods in the service
-        // that just get called with the correct table names.
         m_date = new Date();
         new LoadValuesTask().execute();
     }
@@ -75,13 +70,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnSave(View view) {
-        GratefulnessEntry[] entries = {
-            new GratefulnessEntry(m_date, 0, m_gratefulness0Input.getText().toString()),
-            new GratefulnessEntry(m_date, 1, m_gratefulness1Input.getText().toString()),
-            new GratefulnessEntry(m_date, 2, m_gratefulness2Input.getText().toString())
-        };
 
-        new SaveValuesTask(view).execute(entries);
+        JournalValuesContainer data = new JournalValuesContainer();
+
+        data.GratefulnessEntries = GetJournalEntries(m_date, new EditText[] { m_gratefulness0Input, m_gratefulness1Input, m_gratefulness2Input });
+        data.GoalEntries = GetJournalEntries(m_date, new EditText[] { m_goals0Input, m_goals1Input, m_goals2Input });
+        data.AffirmationEntries = GetJournalEntries(m_date, new EditText[] { m_affirmationsInput });
+        data.WinEntries = GetJournalEntries(m_date, new EditText[] { m_wins0Input, m_wins1Input, m_wins2Input });
+        data.ImprovementEntries = GetJournalEntries(m_date, new EditText[] { m_improvementInput });
+
+        new SaveValuesTask(view).execute(data);
+    }
+
+    private static List<JournalEntry> GetJournalEntries(Date date, EditText[] inputs) {
+
+        List<JournalEntry> results = new ArrayList<>();
+        int number = 0;
+
+        for (EditText input: inputs) {
+            results.add(new JournalEntry(date, number++, input.getText().toString()));
+        }
+
+        return results;
     }
 
     private IJournalStorageService m_storageService;
@@ -100,58 +110,106 @@ public class MainActivity extends AppCompatActivity {
     // Date for the data in this activity, used for loading and saving data.
     private Date m_date;
 
-    private class LoadValuesTask extends AsyncTask<Object, Integer, List<GratefulnessEntry>> {
+    private class LoadValuesTask extends AsyncTask<Object, Integer, JournalValuesContainer> {
         @Override
-        protected List<GratefulnessEntry> doInBackground(Object[] params) {
-            return m_storageService.GetGratefulnessEntries(m_date);
+        protected JournalValuesContainer doInBackground(Object[] params) {
+
+            JournalValuesContainer result = new JournalValuesContainer();
+
+            result.GratefulnessEntries = m_storageService.GetGratefulnessEntries(m_date);
+            result.GoalEntries = m_storageService.GetGoalEntries(m_date);
+            result.AffirmationEntries = m_storageService.GetAffirmationEntries(m_date);
+            result.WinEntries = m_storageService.GetWinEntries(m_date);
+            result.ImprovementEntries = m_storageService.GetImprovementEntries(m_date);
+
+            return result;
         }
 
         @Override
-        protected void onPostExecute(List<GratefulnessEntry> results) {
+        protected void onPostExecute(JournalValuesContainer result) {
+
             String uiDateString = DateFormat.getDateInstance().format(m_date);
             m_dateLabel.setText(uiDateString);
 
-            m_gratefulness0Input.setText("");
-            m_gratefulness1Input.setText("");
-            m_gratefulness2Input.setText("");
+            SetUiValues(result.GratefulnessEntries, new EditText[] { m_gratefulness0Input, m_gratefulness1Input, m_gratefulness2Input });
+            SetUiValues(result.GoalEntries, new EditText[] { m_goals0Input, m_goals1Input, m_goals2Input });
+            SetUiValues(result.AffirmationEntries, new EditText[] { m_affirmationsInput });
+            SetUiValues(result.WinEntries, new EditText[] { m_wins0Input, m_wins1Input, m_wins2Input });
+            SetUiValues(result.ImprovementEntries, new EditText[] { m_improvementInput });
+        }
 
-            for (GratefulnessEntry entry: results) {
-                switch (entry.Number()) {
-                    case 0:
-                        m_gratefulness0Input.setText(entry.Value());
-                        break;
+        private void SetUiValues(List<JournalEntry> values, EditText[] inputs) {
 
-                    case 1:
-                        m_gratefulness1Input.setText(entry.Value());
-                        break;
+            // Clear inputs, so we don't keep previous data if a field doesn't have a stored value.
+            for (EditText input : inputs) {
+                input.setText("");
+            }
 
-                    case 2:
-                        m_gratefulness2Input.setText(entry.Value());
-                        break;
+            int numInputs = inputs.length;
 
-                    default:
-                        Log.e("LoadValuesTask", "Cannot handle gratefulness entry with number " + entry.Number());
+            // Set given values. We use the Number property of a value to determine the correct input
+            // field, so it's ok if there isn't a value for every given input. But all inputs must be
+            // given, and in correct order.
+            for (JournalEntry value : values) {
+                if (value.Number() < numInputs) {
+                    inputs[value.Number()].setText(value.Value());
+                } else {
+                    Log.e("LoadValuesTask", "Cannot handle entry with number " + value.Number() +
+                        ", given number of inputs is " + numInputs);
                 }
             }
         }
     }
 
-    private class SaveValuesTask extends AsyncTask<GratefulnessEntry, Integer, Boolean> {
+    private class SaveValuesTask extends AsyncTask<JournalValuesContainer, Integer, Boolean> {
         SaveValuesTask(View view) {
             m_view = view;
         }
 
         @Override
-        protected Boolean doInBackground(GratefulnessEntry[] params) {
+        protected Boolean doInBackground(JournalValuesContainer[] params) {
+
+            if (params == null || params.length != 1 || params[0] == null) {
+                Log.e("SaveError", "Expected a single JournalValuesContainer parameter");
+                return false;
+            }
+
+            JournalValuesContainer data = params[0];
             boolean success = true;
 
-            for (GratefulnessEntry entry: params) {
-                try {
-                    m_storageService.AddOrUpdateGratefulnessEntry(entry);
-                } catch (Throwable t) {
-                    Log.e("SaveError", "Failed to save entries", t);
-                    success = false;
+            try {
+                if (data.GratefulnessEntries != null) {
+                    for (JournalEntry entry : data.GratefulnessEntries) {
+                        m_storageService.AddOrUpdateGratefulnessEntry(entry);
+                    }
                 }
+
+                if (data.GoalEntries != null) {
+                    for (JournalEntry entry : data.GoalEntries) {
+                        m_storageService.AddOrUpdateGoalEntry(entry);
+                    }
+                }
+
+                if (data.AffirmationEntries != null) {
+                    for (JournalEntry entry : data.AffirmationEntries) {
+                        m_storageService.AddOrUpdateAffirmationEntry(entry);
+                    }
+                }
+
+                if (data.WinEntries != null) {
+                    for (JournalEntry entry : data.WinEntries) {
+                        m_storageService.AddOrUpdateWinEntry(entry);
+                    }
+                }
+
+                if (data.ImprovementEntries != null) {
+                    for (JournalEntry entry : data.ImprovementEntries) {
+                        m_storageService.AddOrUpdateImprovementEntry(entry);
+                    }
+                }
+            } catch (Throwable t) {
+                Log.e("SaveError", "Failed to save entries", t);
+                success = false;
             }
 
             return success;
@@ -164,5 +222,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private View m_view;
+    }
+
+    private class JournalValuesContainer {
+
+        public List<JournalEntry> GratefulnessEntries;
+
+        public List<JournalEntry> GoalEntries;
+
+        public List<JournalEntry> AffirmationEntries;
+
+        public List<JournalEntry> WinEntries;
+
+        public List<JournalEntry> ImprovementEntries;
     }
 }
