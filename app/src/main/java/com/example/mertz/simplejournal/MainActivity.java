@@ -1,10 +1,13 @@
 package com.example.mertz.simplejournal;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.support.design.widget.Snackbar;
@@ -38,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         m_wins2Input = (EditText)findViewById(R.id.Wins2Input);
         m_improvementInput = (EditText)findViewById(R.id.ImprovementInput);
 
+        // Default focus should be on the layout, which will remove focus from inputs.
+        m_defaultFocusView = findViewById(R.id.ConstraintLayout);
+
         m_storageService = new JournalStorageService(this);
 
         m_date = new Date();
@@ -53,11 +59,19 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO would be nice if we could persist unsaved changes in some temporary way, or prompt
         // before discarding them by switching the date
+
+        HideSoftKeyboard(MainActivity.this, view);
+        RequestDefaultFocus();
+
         m_date = AddDays(m_date, 1);
         new LoadValuesTask().execute();
     }
 
     public void OnPreviousDate(View view) {
+
+        HideSoftKeyboard(MainActivity.this, view);
+        RequestDefaultFocus();
+
         m_date = AddDays(m_date, -1);
         new LoadValuesTask().execute();
     }
@@ -70,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnSave(View view) {
+
+        HideSoftKeyboard(MainActivity.this, view);
+        RequestDefaultFocus();
 
         JournalValuesContainer data = new JournalValuesContainer();
 
@@ -94,6 +111,17 @@ public class MainActivity extends AppCompatActivity {
         return results;
     }
 
+    private void RequestDefaultFocus() {
+        m_defaultFocusView.requestFocus();
+        m_defaultFocusView.requestFocusFromTouch();
+    }
+
+    private static void HideSoftKeyboard(Activity activity, View view)
+    {
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
+    }
+
     private IJournalStorageService m_storageService;
     private TextView m_dateLabel;
     private EditText m_gratefulness0Input;
@@ -107,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText m_wins1Input;
     private EditText m_wins2Input;
     private EditText m_improvementInput;
+    private View m_defaultFocusView;
     // Date for the data in this activity, used for loading and saving data.
     private Date m_date;
 
